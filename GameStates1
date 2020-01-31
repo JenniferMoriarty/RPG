@@ -1,0 +1,67 @@
+#include<iostream>
+using namespace std;
+
+#include<allegro5/allegro.h>
+#include<allegro5/allegro_font.h>
+#include<allegro5/allegro_ttf.h>
+
+enum gamestates { INTRO,  FIGHT, MENU, WORLD, CASTLE, END };
+
+int main() {
+
+	int gamestate = INTRO;
+	bool running = true;
+	char input;
+	int PreviousState = WORLD;
+
+	while (running) {
+		switch (gamestate) {
+		case INTRO:
+			cout << "welcome to the game!" << endl;
+			cout << "press 's' to start" << endl << endl;
+			break;
+
+		case WORLD:
+			cout << "World Map Showing." << endl;
+			cout << "press 'm' for menu" << endl << endl;
+			break;
+		case FIGHT:
+			cout << "Fight menu" << endl;
+			break;
+		case CASTLE:
+			cout << "Castle Map Showing" << endl;
+			break;
+		case MENU:
+			cout << "Menu Screen. Press escape to go back" << endl;
+			break;
+		case END:
+			cout << "The end, thanks for playing." << endl;
+			running = false;
+			break;
+		default:
+			cout << "you should never see this message." << endl;
+		}//end switch
+
+		if (running == true)
+			cin >> input;
+
+		if (gamestate == INTRO && input == 's')
+			gamestate = WORLD;
+		if (gamestate == MENU && input == 'e' && PreviousState == WORLD)
+			gamestate = WORLD;
+		if (gamestate == MENU && input == 'e' && PreviousState == CASTLE)
+			gamestate = CASTLE;
+		if (gamestate == WORLD && input == 'm') {
+			gamestate = MENU;
+			PreviousState = WORLD;
+		}
+		if (gamestate == CASTLE && input == 'm') {
+			gamestate = MENU;
+			PreviousState = CASTLE;
+
+		}
+
+
+	}//end game loop
+	cout << "goodbye." << endl;
+}
